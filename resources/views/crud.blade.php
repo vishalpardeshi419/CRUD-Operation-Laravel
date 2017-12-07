@@ -5,10 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/validation.css">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>	
   <script src="js/validation.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">  
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js">    
+  </script>
+
+  <script >
+  $(document).ready( function () {
+    $('#table_id').DataTable({
+      paging:true,
+      'ajax' :' {{ url('/demo') }}',
+      //removing sorting from column
+      columnDefs: [
+      { orderable: false, targets: -1 }
+      ]
+    });
+  });
+  </script>
 </head>
 <body>
 	 
@@ -20,13 +38,13 @@
   <!-- Nav pills -->
   <ul class="nav nav-pills" role="tablist">
   	<li class="nav-item">
-      <a class="nav-link active" data-toggle="pill" href="#create">Create</a>
+    <a class="nav-link active" data-toggle="pill" href="#create">Create</a>
     </li>   
-      <!-- <li class="nav-item">
-        <a class="nav-link" data-toggle="pill" href="#Update">Update</a>
-      </li> -->
+    <!-- <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#Update">Update</a>
+    </li> -->
     <li class="nav-item">
-      <a class="nav-link" data-toggle="pill" href="#Delete">Delete</a>
+    <a class="nav-link" data-toggle="pill" href="#Delete">Delete</a>
     </li>
   </ul>  
 
@@ -81,42 +99,23 @@
 
         <input type="button" name="" value="Update">
         </div>
-	   </div> -->
+	   </div> -->    
 
-    <div id="Delete" class="container tab-pane fade"><br>
-      <h3>Delete</h3>        
-      <div class="container">
-      <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-        <th>operation</th>
-      </tr>
-      </thead>
-      <?php
-        foreach ($data as $value) { 
-        ?>
-           <tbody>
-              <tr>
-                <td>{{$value->id}}</td>
-                <td>{{$value->name}}</td>
-                <td>{{$value->email}}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ route('delete.edit',$value->id) }}">Edit</a>
-                    {!! Form::open(['method' => 'DELETE','route' => ['delete.destroy', $value->id],'style'=>'display:inline']) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}                    
-                    {!! Form::close() !!}                  
-                </td>
-              </tr>                              
-            </tbody>      
-        <?php
-        }
-        ?>         
-      </table>
-   	  </form>
-  	</div>
-  </div>	    
+    
+
+    <div id="Delete"><br>
+      <h3>Delete</h3>              
+        <table id="table_id" class="display">
+          <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>            
+            <th>Action</th>
+          </tr>
+          </thead>
+        </table>                        	
+  </div>	
+</div>    
 </body>	
 </hmtl>

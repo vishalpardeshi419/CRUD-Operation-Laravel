@@ -19,4 +19,8 @@ Route::get('/','CRUDController@index');
 
 Route::get('/create', 'CRUDController@create');
 
+Route::get('/demo', 'CRUDController@getDatatable');
+
+Route::get('/deleteuser', 'CRUDController@destroy');
+
 Route::resource('/delete' , 'CRUDController');

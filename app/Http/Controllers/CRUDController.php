@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\CRUD;
+use Datatable;
 
 class CRUDController extends Controller
 {
@@ -16,7 +17,19 @@ class CRUDController extends Controller
     {
         $Cruds = CRUD::all();
         return view('CRUD')
-             ->with('data' , $Cruds);
+             ->with('data' , $Cruds);       
+    }
+
+    public function getDatatable()
+    {
+        return Datatable::collection(CRUD::all(['id','name','email']))
+        ->showColumns('id', 'name','email')
+        ->addColumn('action',function($model){
+            return '<a class="btn btn-danger" href="'.url('/deleteuser').'/'.$model->id.'">delete</a>';
+        })
+        ->searchColumns(['id','name','email'])
+        ->orderColumns('id','name')
+        ->make();
     }
 
     /**
@@ -60,10 +73,7 @@ class CRUDController extends Controller
      */
     public function edit($id)
     {
-        $Cruds = CRUD::all();
-          return view('CRUD')
-               ->with('data' , $Cruds);
-          return view('CRUD',compact('member'));
+        
     }
 
     /**
